@@ -1,15 +1,57 @@
-// Step 1: Simulate User Behavior
-// - Add event listeners for button clicks and form submissions.
-// - Use JavaScript to dynamically update the DOM based on user actions.
+// Add element with given id and text content
+function addElementToDOM(id, text) {
+  let el = document.getElementById(id);
+  if (!el) {
+    el = document.createElement('div');
+    el.id = id;
+    document.body.appendChild(el);
+  }
+  el.textContent = text;
+  return el;
+}
 
-// Step 2: DOM Manipulation Functions
-// - Implement functions to add, update, and remove DOM elements.
-// - Ensure all elements are dynamically created with appropriate attributes and content.
+// Remove element by id
+function removeElementFromDOM(id) {
+  const el = document.getElementById(id);
+  if (el) el.remove();
+}
 
-// Step 3: Error Handling
-// - Display error messages in the DOM for invalid inputs or missing elements.
-// - Create reusable functions to handle common error cases.
+// Simulate a "click" action by updating target element
+function simulateClick(id, text) {
+  return addElementToDOM(id, text);
+}
 
-// Step 4: Reusable Utilities
-// - Create modular utility functions, such as createElement(tag, attributes).
-// - Ensure all functions follow DRY principles for maintainability.
+// Handle form submission and update target / show error
+function handleFormSubmit(formId, targetId) {
+  const form = document.getElementById(formId);
+  if (!form) return;
+
+  const input = form.querySelector('input');
+  const value = (input?.value || '').trim();
+  const errorEl = document.getElementById('error-message');
+
+  if (!value) {
+    if (errorEl) {
+      errorEl.textContent = 'Input cannot be empty';
+      errorEl.classList.remove('hidden');
+    }
+    return;
+  }
+
+  // hide error if any
+  if (errorEl) {
+    errorEl.textContent = '';
+    errorEl.classList.add('hidden');
+  }
+
+  const target = addElementToDOM(targetId, '');
+  target.textContent = value;
+}
+
+// Expose for Jest
+module.exports = {
+  addElementToDOM,
+  removeElementFromDOM,
+  simulateClick,
+  handleFormSubmit,
+};
